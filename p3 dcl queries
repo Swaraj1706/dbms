@@ -1,0 +1,74 @@
+CREATE DATABASE college_db;
+
+USE college_db;
+
+CREATE TABLE student (
+ roll_no INT PRIMARY KEY,
+ name VARCHAR(50),
+ marks INT
+);
+
+INSERT INTO student VALUES
+(1,'Amit',85),
+(2,'Neha',90),
+(3,'Ravi',78);
+
+SELECT * FROM student;
+
+CREATE USER 'admin1'@'localhost'
+IDENTIFIED BY 'admin123';
+
+CREATE USER 'faculty1'@'localhost'
+IDENTIFIED BY 'faculty123';
+
+CREATE USER 'student1'@'localhost'
+IDENTIFIED BY 'student123';
+
+CREATE ROLE 'admin_role';
+
+CREATE ROLE 'faculty_role';
+
+CREATE ROLE 'student_role';
+
+GRANT ALL PRIVILEGES
+ON college_db.*
+TO 'admin_role';
+
+GRANT SELECT, UPDATE
+ON college_db.student
+TO 'faculty_role';
+
+GRANT SELECT
+ON college_db.student
+TO 'student_role';
+
+GRANT 'admin_role'
+TO 'admin1'@'localhost';
+
+GRANT 'faculty_role'
+TO 'faculty1'@'localhost';
+
+GRANT 'student_role'
+TO 'student1'@'localhost';
+
+SET DEFAULT ROLE ALL TO
+'admin1'@'localhost',
+'faculty1'@'localhost',
+'student1'@'localhost';
+
+SHOW GRANTS FOR 'faculty1'@'localhost';
+
+SELECT * FROM college_db.student;
+
+INSERT INTO college_db.student
+VALUES (4,'Pooja',88);
+
+REVOKE UPDATE
+ON college_db.student
+FROM 'faculty_role';
+
+SHOW GRANTS FOR 'faculty1'@'localhost';
+
+DROP ROLE 'student_role';
+
+DROP USER 'student1'@'localhost';
