@@ -1,0 +1,58 @@
+CREATE TABLE Dept_J (
+ dept_id INT PRIMARY KEY,
+ dept_name VARCHAR(50)
+);
+
+CREATE TABLE Emp_J (
+ emp_id INT PRIMARY KEY,
+ name VARCHAR(50),
+ dept_id INT,
+ salary INT
+);
+
+INSERT INTO Dept_J VALUES
+(1,'IT'),
+(2,'HR'),
+(3,'Finance');
+
+INSERT INTO Emp_J VALUES
+(101,'Amit',1,30000),
+(102,'Neha',2,40000),
+(103,'Ravi',1,35000),
+(104,'Pooja',4,45000);
+
+SELECT * FROM Dept_J;
+
+SELECT * FROM Emp_J;
+
+SELECT e.emp_id, e.name, d.dept_name
+FROM Emp_J e
+INNER JOIN Dept_J d
+ON e.dept_id = d.dept_id;
+
+SELECT e.emp_id, e.name, d.dept_name
+FROM Emp_J e
+LEFT JOIN Dept_J d
+ON e.dept_id = d.dept_id;
+
+SELECT d.dept_id, d.dept_name, e.name
+FROM Dept_J d
+RIGHT JOIN Emp_J e
+ON d.dept_id = e.dept_id;
+
+CREATE VIEW emp_view AS
+SELECT name, salary FROM Emp_J;
+
+SELECT * FROM emp_view;
+
+CREATE VIEW dept_emp_view AS
+SELECT e.name, d.dept_name
+FROM Emp_J e
+INNER JOIN Dept_J d
+ON e.dept_id = d.dept_id;
+
+SELECT * FROM dept_emp_view;
+
+DROP VIEW emp_view;
+
+SHOW FULL TABLES WHERE TABLE_TYPE='VIEW';
