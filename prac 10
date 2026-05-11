@@ -1,0 +1,59 @@
+use SEA
+
+db.createCollection("Student");
+
+db.Student.insert([
+ {Rollno:1, Name:"Sachin", Marks:900, Branch:"Computer"},
+ {Rollno:2, Name:"Rahul", Marks:800, Branch:"IT"},
+ {Rollno:3, Name:"Vedika", Marks:750, Branch:"Computer"}
+]);
+
+db.Student.find().pretty();
+
+db.Student.aggregate([
+ {$group:{_id:"$Branch", Total_Marks:{$sum:"$Marks"}}}
+]);
+
+db.Student.aggregate([
+ {$group:{_id:"$Branch", Avg_Marks:{$avg:"$Marks"}}}
+]);
+
+db.Student.aggregate([
+ {$group:{_id:"$Branch", Min_Marks:{$min:"$Marks"}}}
+]);
+
+db.Student.aggregate([
+ {$group:{_id:"$Branch", Max_Marks:{$max:"$Marks"}}}
+]);
+
+db.Student.find({
+ "Marks":{$gt:800}
+}).pretty();
+
+db.Student.find({
+ $and:[
+  {"Marks":{$gt:700}},
+  {"Branch":"Computer"}
+ ]
+}).pretty();
+
+db.Student.update(
+ {Rollno:2},
+ {$set:{Marks:820}}
+);
+
+db.Student.find({Rollno:2}).pretty();
+
+db.Student.remove({Rollno:3});
+
+db.Student.find().pretty();
+
+db.Student.createIndex({"Rollno":1});
+
+db.Student.createIndex({"Marks":-1});
+
+db.Student.getIndexes();
+
+db.Student.dropIndex({"Rollno":1});
+
+db.Student.getIndexes();
