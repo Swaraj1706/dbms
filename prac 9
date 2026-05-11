@@ -1,0 +1,41 @@
+use SEA
+
+db.createCollection("Student");
+
+db.Student.insert({
+ Rollno : 1,
+ Name : "Sachin",
+ Marks : 900,
+ Branch : "Computer"
+});
+
+db.Student.insert([
+ {Rollno:2, Name:"Rahul", Marks:800, Branch:"IT"},
+ {Rollno:3, Name:"Vedika", Branch:"Computer"}
+]);
+
+db.Student.find().pretty();
+
+db.Student.find({Branch:"Computer"}).pretty();
+
+db.Student.find({
+ Marks: {$gt:850}
+}).pretty();
+
+db.Student.update(
+ {Rollno:3},
+ {$set:{Marks:750}}
+);
+
+db.Student.find({Rollno:3}).pretty();
+
+db.Student.find({
+ $and:[
+  {"Marks":{$gt:700}},
+  {"Branch":"Computer"}
+ ]
+}).pretty();
+
+db.Student.remove({Rollno:2});
+
+db.Student.find().pretty();
