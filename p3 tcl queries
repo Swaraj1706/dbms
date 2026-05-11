@@ -1,0 +1,39 @@
+USE SEA;
+
+CREATE TABLE Account (
+ acc_id INT PRIMARY KEY,
+ name VARCHAR(50),
+ balance INT
+);
+
+INSERT INTO Account VALUES
+(1, 'Amit', 5000),
+(2, 'Rahul', 6000);
+
+SELECT * FROM Account;
+
+START TRANSACTION;
+
+UPDATE Account
+SET balance = balance - 1000
+WHERE acc_id = 1;
+
+UPDATE Account
+SET balance = balance + 1000
+WHERE acc_id = 2;
+
+SAVEPOINT sp1;
+
+UPDATE Account
+SET balance = balance - 500
+WHERE acc_id = 1;
+
+SELECT * FROM Account;
+
+ROLLBACK TO sp1;
+
+SELECT * FROM Account;
+
+COMMIT;
+
+SELECT * FROM Account;
