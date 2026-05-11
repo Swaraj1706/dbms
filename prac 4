@@ -1,0 +1,37 @@
+CREATE TABLE Employee_Agg (
+ emp_id INT PRIMARY KEY,
+ name VARCHAR(50),
+ dept VARCHAR(50),
+ salary INT
+);
+
+INSERT INTO Employee_Agg VALUES
+(1,'Amit','IT',30000),
+(2,'Neha','HR',40000),
+(3,'Ravi','IT',35000),
+(4,'Pooja','HR',45000),
+(5,'Karan','Finance',50000);
+
+SELECT * FROM Employee_Agg;
+
+SELECT COUNT(*) AS total_employees
+FROM Employee_Agg;
+
+SELECT dept, SUM(salary) AS total_salary
+FROM Employee_Agg
+GROUP BY dept;
+
+SELECT dept, AVG(salary) AS avg_salary
+FROM Employee_Agg
+GROUP BY dept;
+
+SELECT dept,
+MAX(salary) AS max_salary,
+MIN(salary) AS min_salary
+FROM Employee_Agg
+GROUP BY dept;
+
+SELECT dept, SUM(salary) AS total_salary
+FROM Employee_Agg
+GROUP BY dept
+HAVING SUM(salary) > 60000;
