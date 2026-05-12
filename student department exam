@@ -1,0 +1,58 @@
+CREATE TABLE Student (
+ stud_id INT PRIMARY KEY,
+ name VARCHAR(50),
+ dept_id INT,
+ marks INT
+);
+
+CREATE TABLE Exam (
+ e_id INT PRIMARY KEY,
+ stud_id INT,
+ subject VARCHAR(50),
+ marks INT,
+ FOREIGN KEY (stud_id) REFERENCES Student(stud_id)
+);
+
+INSERT INTO Student VALUES
+(1,'Amit',101,78),
+(2,'Neha',102,85),
+(3,'Rahul',101,67),
+(4,'Pooja',103,92);
+
+INSERT INTO Exam VALUES
+(11,1,'DBMS',80),
+(12,2,'Java',90),
+(13,3,'Python',70),
+(14,4,'CN',95);
+
+ALTER TABLE Student
+ADD CONSTRAINT chk_marks
+CHECK (marks BETWEEN 0 AND 100);
+
+ALTER TABLE Student
+DROP COLUMN marks;
+
+ALTER TABLE Student
+ADD marks INT;
+
+SELECT name
+FROM Student;
+
+UPDATE Student
+SET marks = marks + 5;
+
+DELETE FROM Student
+WHERE marks < 40;
+
+SELECT dept_id,
+AVG(marks) AS average_marks
+FROM Student
+GROUP BY dept_id;
+
+SELECT dept_id,
+COUNT(stud_id) AS total_students
+FROM Student
+GROUP BY dept_id;
+
+SELECT MAX(marks) AS highest_marks
+FROM Student;
