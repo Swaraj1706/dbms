@@ -1,0 +1,76 @@
+CREATE TABLE Branch (
+ branch_id INT PRIMARY KEY,
+ branch_name VARCHAR(50),
+ city VARCHAR(50)
+);
+
+CREATE TABLE Account (
+ acc_no INT PRIMARY KEY,
+ acc_holder VARCHAR(50),
+ balance DECIMAL(10,2),
+ branch_id INT,
+ FOREIGN KEY (branch_id) REFERENCES Branch(branch_id),
+ CHECK (balance > 0)
+);
+
+CREATE TABLE Transaction1 (
+ txn_id INT PRIMARY KEY,
+ acc_no INT,
+ amount DECIMAL(10,2),
+ txn_type VARCHAR(20),
+ txn_date DATE,
+ FOREIGN KEY (acc_no) REFERENCES Account(acc_no)
+);
+
+INSERT INTO Branch VALUES
+(1,'Main','Mumbai'),
+(2,'City','Pune'),
+(3,'Central','Nashik');
+
+INSERT INTO Account VALUES
+(101,'Amit',25000,1),
+(102,'Neha',40000,2),
+(103,'Rahul',15000,1),
+(104,'Pooja',55000,3),
+(105,'Riya',30000,2);
+
+INSERT INTO Transaction1 VALUES
+(1,101,5000,'Deposit','2024-01-10'),
+(2,102,3000,'Withdraw','2024-01-11'),
+(3,103,7000,'Deposit','2024-01-12'),
+(4,104,2000,'Withdraw','2024-01-13'),
+(5,105,10000,'Deposit','2024-01-14');
+
+ALTER TABLE Account
+MODIFY acc_holder VARCHAR(50) NOT NULL;
+
+ALTER TABLE Account
+CHANGE balance acc_balance DECIMAL(10,2);
+
+UPDATE Account
+SET acc_balance = acc_balance + 5000
+WHERE acc_no = 101;
+
+SELECT branch_id,
+SUM(acc_balance) AS total_balance
+FROM Account
+GROUP BY branch_id;
+
+SELECT branch_id,
+COUNT(acc_no) AS total_accounts
+FROM Account
+GROUP BY branch_id;
+
+SELECT *
+FROM Account
+WHERE acc_balance = (
+ SELECT MAX(acc_balance)
+ FROM Account
+);
+
+SELECT *
+FROM Account
+WHERE acc_balance > (
+ SELECT AVG(acc_balance)
+ FROM Account
+);
