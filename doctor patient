@@ -1,0 +1,93 @@
+CREATE TABLE Doctor (
+ doctor_id INT PRIMARY KEY,
+ doctor_name VARCHAR(50),
+ specialization VARCHAR(50)
+);
+
+CREATE TABLE Patient (
+ patient_id INT PRIMARY KEY,
+ name VARCHAR(50),
+ age INT CHECK(age > 0),
+ disease VARCHAR(50),
+ doctor_id INT,
+ FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id)
+);
+
+CREATE TABLE Appointment (
+ app_id INT PRIMARY KEY,
+ patient_id INT,
+ doctor_id INT,
+ app_date DATE,
+ FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
+ FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id)
+);
+
+INSERT INTO Doctor VALUES
+(1,'Dr.Sharma','Cardiologist'),
+(2,'Dr.Mehta','Neurologist'),
+(3,'Dr.Patil','Orthopedic'),
+(4,'Dr.Rao','Dermatologist'),
+(5,'Dr.Khan','Pediatrician');
+
+INSERT INTO Patient VALUES
+(101,'Amit',25,'Fever',1),
+(102,'Neha',32,'Migraine',2),
+(103,'Rahul',45,'Fracture',3),
+(104,'Pooja',28,'Skin Allergy',4),
+(105,'Riya',60,'Heart Problem',1);
+
+INSERT INTO Appointment VALUES
+(1,101,1,'2020-05-10'),
+(2,102,2,'2022-03-15'),
+(3,103,3,'2023-01-20'),
+(4,104,4,'2021-07-11'),
+(5,105,1,'2024-02-01');
+
+ALTER TABLE Doctor
+ADD CONSTRAINT unique_doctor_name UNIQUE(doctor_name);
+
+SELECT doctor_name
+FROM Doctor
+WHERE doctor_id NOT IN (
+ SELECT doctor_id
+ FROM Patient
+);
+
+UPDATE Patient
+SET disease = 'Diabetes'
+WHERE patient_id = 101;
+
+DELETE FROM Appointment
+WHERE YEAR(app_date) < 2021;
+
+SELECT doctor_id,
+COUNT(patient_id) AS total_patients
+FROM Patient
+GROUP BY doctor_id;
+
+SELECT AVG(age) AS average_age
+FROM Patient;
+
+SELECT doctor_id,
+COUNT(patient_id) AS total_patients
+FROM Patient
+GROUP BY doctor_id
+HAVING COUNT(patient_id) > 2;
+
+SELECT name
+FROM Patient
+WHERE doctor_id = 1;
+
+SELECT doctor_id,
+COUNT(patient_id) AS total_patients
+FROM Patient
+GROUP BY doctor_id
+ORDER BY total_patients DESC
+LIMIT 1;
+
+SELECT name, age
+FROM Patient
+WHERE age > (
+ SELECT AVG(age)
+ FROM Patient
+);
