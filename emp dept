@@ -1,0 +1,69 @@
+CREATE TABLE Department (
+ dept_id INT PRIMARY KEY,
+ dept_name VARCHAR(50)
+);
+
+CREATE TABLE Employee (
+ emp_id INT PRIMARY KEY,
+ name VARCHAR(50),
+ dept_id INT,
+ salary INT,
+ joining_date DATE
+);
+
+INSERT INTO Department VALUES
+(1,'IT'),
+(2,'HR'),
+(3,'Finance');
+
+INSERT INTO Employee VALUES
+(101,'Sam',1,50000,'2018-06-10'),
+(102,'Suresh',1,45000,'2020-01-15'),
+(103,'Amit',2,35000,'2017-03-20'),
+(104,'Sneha',1,60000,'2021-07-25'),
+(105,'Rahul',3,55000,'2019-11-11');
+
+SELECT *
+FROM Employee
+WHERE salary > 40000;
+
+SELECT name
+FROM Employee
+WHERE name LIKE 'S%';
+
+UPDATE Employee
+SET salary = salary + (salary * 15/100)
+WHERE dept_id = 1;
+
+DELETE FROM Employee
+WHERE joining_date < '2019-01-01';
+
+SELECT dept_id,
+AVG(salary) AS avg_salary
+FROM Employee
+GROUP BY dept_id;
+
+SELECT dept_id,
+COUNT(*) AS total
+FROM Employee
+GROUP BY dept_id;
+
+SELECT dept_id,
+COUNT(*) AS total
+FROM Employee
+GROUP BY dept_id
+HAVING COUNT(*) > 2;
+
+SELECT *
+FROM Employee
+WHERE salary > (
+ SELECT AVG(salary)
+ FROM Employee
+);
+
+SELECT *
+FROM Employee
+WHERE salary = (
+ SELECT MAX(salary)
+ FROM Employee
+);
