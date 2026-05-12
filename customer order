@@ -1,0 +1,61 @@
+CREATE TABLE Customer (
+ customer_id INT PRIMARY KEY,
+ customer_name VARCHAR(50),
+ city VARCHAR(30)
+);
+
+CREATE TABLE Orders (
+ order_id INT PRIMARY KEY,
+ customer_id INT,
+ amount DECIMAL(10,2),
+ order_date DATE
+);
+
+INSERT INTO Customer VALUES
+(1,'Amit','Mumbai'),
+(2,'Neha','Pune'),
+(3,'Rahul','Mumbai'),
+(4,'Pooja','Delhi');
+
+INSERT INTO Orders VALUES
+(101,1,6000,'2021-05-10'),
+(102,2,4500,'2022-03-12'),
+(103,1,8000,'2023-01-15'),
+(104,3,3000,'2021-07-20'),
+(105,1,7000,'2022-11-25');
+
+SELECT *
+FROM Customer
+WHERE city = 'Mumbai';
+
+SELECT *
+FROM Orders
+WHERE amount > 5000;
+
+UPDATE Orders
+SET amount = amount + (amount * 0.10);
+
+DELETE FROM Orders
+WHERE YEAR(order_date) < 2022;
+
+SELECT SUM(amount) AS total_order_amount
+FROM Orders;
+
+SELECT customer_id,
+AVG(amount) AS average_amount
+FROM Orders
+GROUP BY customer_id;
+
+SELECT customer_id,
+COUNT(order_id) AS total_orders
+FROM Orders
+GROUP BY customer_id
+HAVING COUNT(order_id) > 2;
+
+SELECT DISTINCT C.customer_name
+FROM Customer C
+JOIN Orders O
+ON C.customer_id = O.customer_id;
+
+SELECT MAX(amount) AS highest_order_amount
+FROM Orders;
